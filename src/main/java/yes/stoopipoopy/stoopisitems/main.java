@@ -6,8 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +30,10 @@ public final class main extends JavaPlugin implements Listener {
     @EventHandler
     public void ABILITY_TEST(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) {
+        ItemStack heldItem = e.getItem();
+        ItemMeta itemMeta = heldItem.getItemMeta();
+
+        if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && itemMeta.hasItemFlag()) {
 
             if(cooldown.containsKey(p.getUniqueId())){
                 long secondsLeft = ((cooldown.get(p.getUniqueId()) / 1000) + cooldownTime) - (System.currentTimeMillis() /1000);
