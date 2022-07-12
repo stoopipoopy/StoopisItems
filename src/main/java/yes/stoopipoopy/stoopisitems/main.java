@@ -50,6 +50,11 @@ public final class main extends JavaPlugin implements Listener {
             }else{
 
                 /** PUT FUNCTIONALITY HERE **/
+                /**
+                 * so theres gonna be like a
+                 * check if the item meta contains a certain piece of lore (those quote things in dark gray) do later though im tired
+                 *
+                 */
                 p.sendMessage("do thing");
                 cooldown.put(p.getUniqueId(),System.currentTimeMillis());
             }
