@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +37,12 @@ public final class main extends JavaPlugin implements Listener {
         ItemMeta itemMeta = heldItem.getItemMeta();
         if (itemMeta.hasLore()) {
             p.sendMessage("has lore");
-            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && itemMeta.lore().equals("Those moronic developers thought they could hide this from me?")) {
+            List lore = itemMeta.getLore();
+            for(int i = 0; i < lore.size(); i++){
+                p.sendMessage((String)lore.get(i));
+            }
+
+            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)) {
                 p.sendMessage("contains the lore ;)");
 
                 if (cooldown.containsKey(p.getUniqueId())) {
