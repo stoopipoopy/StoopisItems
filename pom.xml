@@ -6,7 +6,7 @@
 
     <groupId>me.stoopipoopy</groupId>
     <artifactId>stoopis-items-and-bosses</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>stoopis_items_and_bosses</name>

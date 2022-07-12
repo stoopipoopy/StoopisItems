@@ -1,6 +1,6 @@
 name: stoopis_items
 version: '${project.version}'
-main: yes.stoopipoopy.stoopisitems.stoopis_items
+main: yes.stoopipoopy.stoopisitems.main
 api-version: 1.17
 authors: [ stoopi_poopy ]
 description: a very cool plugin used for dungeonfy :D
