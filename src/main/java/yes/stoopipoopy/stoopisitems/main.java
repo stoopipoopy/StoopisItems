@@ -274,6 +274,8 @@ public final class main extends JavaPlugin implements Listener
                 }
                 else {
                     p.sendMessage("do thing (rage)");
+                    rageManager RageManager = new rageManager();
+                    RageManager.start();
                     this.killCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                 }
             }

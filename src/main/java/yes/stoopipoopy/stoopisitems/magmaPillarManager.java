@@ -78,6 +78,7 @@ public class magmaPillarManager extends Thread{
 
                 magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                 System.out.println(magmaPillarCooldown);
+                break;
             }
         }
 
