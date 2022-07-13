@@ -143,7 +143,7 @@ public final class main extends JavaPlugin implements Listener
                     }
                 }
                 else {
-                    p.sendMessage("do thing");
+                    p.sendMessage("do thing(fire)");
                     final World world = p.getWorld();
                     final ArmorStand center = (ArmorStand)world.spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
                     final ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
@@ -168,6 +168,7 @@ public final class main extends JavaPlugin implements Listener
     }
 
     @EventHandler
+    @WorkingOn
     public void GRAVITY_DICE(final PlayerInteractEvent e) throws  InterruptedException{
         final Player p = e.getPlayer();
         final ItemStack heldItem = e.getItem();
@@ -195,7 +196,7 @@ public final class main extends JavaPlugin implements Listener
                 IDLORE += IDARRAY[j];
             }
             System.out.println("|" + IDLORE + "|");
-            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && IDLORE.equals(" Those moronic developers thought they could hide this from me?")) {
+            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && IDLORE.equals(" \"I've always wanted to fly!\"")) {
                 if (this.killCooldown.containsKey(p.getUniqueId())) {
                     final long secondsLeft = this.killCooldown.get(p.getUniqueId()) / 1000L + this.killDiceCooldownTime - System.currentTimeMillis() / 1000L;
                     if (secondsLeft > 0L) {
@@ -206,7 +207,7 @@ public final class main extends JavaPlugin implements Listener
                     }
                 }
                 else {
-                    p.sendMessage("do thing");
+                    p.sendMessage("do thing(gravity)");
                     List<Entity> nearbyEntites = (List<Entity>) p.getWorld().getNearbyEntities(p.getLocation(), 10, 100 , 10);
                     List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
                     PotionEffect levitate = new PotionEffect(PotionEffectType.LEVITATION, 10 + (5 * Integer.valueOf(attunements)), 1, true, false, true);
@@ -231,4 +232,52 @@ public final class main extends JavaPlugin implements Listener
             }
         }
     }
+
+    @EventHandler
+    @WorkingOn
+    public void RAGE_DICE(final PlayerInteractEvent e) throws InterruptedException {
+        final Player p = e.getPlayer();
+        final ItemStack heldItem = e.getItem();
+        final ItemMeta itemMeta = heldItem.getItemMeta();
+        if (itemMeta.hasLore()) {
+            final List lore = itemMeta.getLore();
+            String attunements = (String) lore.get(lore.size() - 1);
+            char[] Attunements = attunements.toCharArray();
+            attunements = " ";
+            String alsoAttunements = " ";
+            for (int i = 2; i < Attunements.length; ++i) {
+                attunements += Attunements[i];
+                alsoAttunements += Attunements[i];
+            }
+            if (alsoAttunements != " Unattuneable") {
+                Attunements = null;
+                Attunements = attunements.toCharArray();
+                String maxAttunements = "";
+                maxAttunements += Attunements[Attunements.length - 1];
+            }
+            String IDLORE = (String) lore.get(0);
+            final char[] IDARRAY = IDLORE.toCharArray();
+            IDLORE = " ";
+            for (int j = 2; j < IDARRAY.length; ++j) {
+                IDLORE += IDARRAY[j];
+            }
+            System.out.println("|" + IDLORE + "|");
+            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && IDLORE.equals(" Level 18 spell.")) {
+                if (this.killCooldown.containsKey(p.getUniqueId())) {
+                    final long secondsLeft = this.killCooldown.get(p.getUniqueId()) / 1000L + this.killDiceCooldownTime - System.currentTimeMillis() / 1000L;
+                    if (secondsLeft > 0L) {
+                        p.sendMessage("seconds left: " + String.valueOf(secondsLeft));
+                    }
+                    else {
+                        this.killCooldown.remove(p.getUniqueId());
+                    }
+                }
+                else {
+                    p.sendMessage("do thing (rage)");
+                    this.killCooldown.put(p.getUniqueId(), System.currentTimeMillis());
+                }
+            }
+        }
+    }
+
 }

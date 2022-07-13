@@ -40,7 +40,7 @@ public class magmaPillarManager extends Thread{
     public void run(){
         while(true){
             try {
-                sleep(100);
+                sleep(500);
             } catch (InterruptedException exception) {
                 throw new RuntimeException(exception);
             }
