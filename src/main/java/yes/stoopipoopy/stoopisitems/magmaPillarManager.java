@@ -38,47 +38,50 @@ public class magmaPillarManager extends Thread{
         this.command = command;
     }
     public void run(){
-
-        try {
-            sleep(100);
-        } catch (InterruptedException exception) {
-            throw new RuntimeException(exception);
-        }
-        List<Entity> nearbyEntites = (List<Entity>) world.getNearbyEntities(center.getLocation(), 2, 100 , 2);
-        List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
-        for(Entity entity : nearbyEntites){
-            if(entity.isDead()){
-                ;
+        while(true){
+            try {
+                sleep(100);
+            } catch (InterruptedException exception) {
+                throw new RuntimeException(exception);
             }
-            else{
-                nearbyLiveEntities.add((LivingEntity) entity);
+            List<Entity> nearbyEntites = (List<Entity>) world.getNearbyEntities(center.getLocation(), 2, 100 , 2);
+            List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
+            for(Entity entity : nearbyEntites){
+                if(entity.isDead()){
+                    ;
+                }
+                else{
+                    nearbyLiveEntities.add((LivingEntity) entity);
+                }
+
+
             }
-
-
-        }
-        for(LivingEntity entity : nearbyLiveEntities){
-            entity.damage(500 + (100 * Integer.valueOf(attunements)));
-        }
-        if(magmaPillarCooldown.containsKey(p.getUniqueId())){
-
-            long secondsLeft = ((magmaPillarCooldown.get(p.getUniqueId()) / 1000) + magmaPillarCooldownTime) - (System.currentTimeMillis() / 1000);
-            if (secondsLeft > 0) {
-                /** idk if this works**/
-
-                sendParticles = true;
-
-
-            } else {
-                sendParticles = false;
-
-                magmaPillarCooldown.remove(p.getUniqueId());
+            for(LivingEntity entity : nearbyLiveEntities){
+                entity.damage(500 + (100 * Integer.valueOf(attunements)));
             }
-        }else{
-            doBreak = true;
+            if(magmaPillarCooldown.containsKey(p.getUniqueId())){
 
-            magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
-            System.out.println(magmaPillarCooldown);
+                long secondsLeft = ((magmaPillarCooldown.get(p.getUniqueId()) / 1000) + magmaPillarCooldownTime) - (System.currentTimeMillis() / 1000);
+                if (secondsLeft > 0) {
+                    /** idk if this works**/
+
+                    sendParticles = true;
+
+
+                } else {
+                    sendParticles = false;
+
+                    magmaPillarCooldown.remove(p.getUniqueId());
+                }
+            }else{
+                doBreak = true;
+
+                magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
+                System.out.println(magmaPillarCooldown);
+            }
         }
+
+
 
     }
 }

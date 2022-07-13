@@ -104,6 +104,7 @@ public final class main extends JavaPlugin implements Listener
     }
 
     @EventHandler
+    @WorkingOn
     public void MAGMA_DICE(final PlayerInteractEvent e) throws InterruptedException {
         final Player p = e.getPlayer();
         final ItemStack heldItem = e.getItem();
@@ -162,6 +163,67 @@ public final class main extends JavaPlugin implements Listener
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                     System.out.println(this.magmaPillarCooldown);
                     this.magmaCooldown.put(p.getUniqueId(), System.currentTimeMillis());
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void GRAVITY_DICE(final PlayerInteractEvent e) throws  InterruptedException{
+        final Player p = e.getPlayer();
+        final ItemStack heldItem = e.getItem();
+        final ItemMeta itemMeta = heldItem.getItemMeta();
+        if (itemMeta.hasLore()) {
+            final List lore = itemMeta.getLore();
+            String attunements = (String) lore.get(lore.size() - 1);
+            char[] Attunements = attunements.toCharArray();
+            attunements = " ";
+            String alsoAttunements = " ";
+            for (int i = 2; i < Attunements.length; ++i) {
+                attunements += Attunements[i];
+                alsoAttunements += Attunements[i];
+            }
+            if (alsoAttunements != " Unattuneable") {
+                Attunements = null;
+                Attunements = attunements.toCharArray();
+                String maxAttunements = "";
+                maxAttunements += Attunements[Attunements.length - 1];
+            }
+            String IDLORE = (String) lore.get(0);
+            final char[] IDARRAY = IDLORE.toCharArray();
+            IDLORE = " ";
+            for (int j = 2; j < IDARRAY.length; ++j) {
+                IDLORE += IDARRAY[j];
+            }
+            System.out.println("|" + IDLORE + "|");
+            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && IDLORE.equals(" Those moronic developers thought they could hide this from me?")) {
+                if (this.killCooldown.containsKey(p.getUniqueId())) {
+                    final long secondsLeft = this.killCooldown.get(p.getUniqueId()) / 1000L + this.killDiceCooldownTime - System.currentTimeMillis() / 1000L;
+                    if (secondsLeft > 0L) {
+                        p.sendMessage("seconds left: " + String.valueOf(secondsLeft));
+                    }
+                    else {
+                        this.killCooldown.remove(p.getUniqueId());
+                    }
+                }
+                else {
+                    p.sendMessage("do thing");
+                    List<Entity> nearbyEntites = (List<Entity>) p.getWorld().getNearbyEntities(p.getLocation(), 10, 100 , 10);
+                    List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
+                    for(Entity entity : nearbyEntites){
+                        if(entity.isDead()){
+                            ;
+                        }
+                        else{
+                            nearbyLiveEntities.add((LivingEntity) entity);
+                        }
+
+
+                    }
+                    for(LivingEntity entity : nearbyLiveEntities){
+                        entity.addPotionEffects();
+                    }
+                    this.killCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                 }
             }
         }
