@@ -4,28 +4,27 @@
 
 package yes.stoopipoopy.stoopisitems;
 
-import java.util.Iterator;
+import java.util.*;
+
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
-import java.util.List;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
-import java.util.UUID;
-import java.util.HashMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public final class main extends JavaPlugin implements Listener
 {
@@ -210,6 +209,7 @@ public final class main extends JavaPlugin implements Listener
                     p.sendMessage("do thing");
                     List<Entity> nearbyEntites = (List<Entity>) p.getWorld().getNearbyEntities(p.getLocation(), 10, 100 , 10);
                     List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
+                    PotionEffect levitate = new PotionEffect(PotionEffectType.LEVITATION, 10 + (5 * Integer.valueOf(attunements)), 1, true, false, true);
                     for(Entity entity : nearbyEntites){
                         if(entity.isDead()){
                             ;
@@ -221,7 +221,10 @@ public final class main extends JavaPlugin implements Listener
 
                     }
                     for(LivingEntity entity : nearbyLiveEntities){
-                        entity.addPotionEffects();
+                        if(entity.getType() != EntityType.PLAYER){
+                            entity.addPotionEffects((Collection<PotionEffect>) levitate);
+                        }
+
                     }
                     this.killCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                 }
