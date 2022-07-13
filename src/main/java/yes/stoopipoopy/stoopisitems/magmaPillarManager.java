@@ -16,6 +16,7 @@ import java.util.UUID;
 
 public class magmaPillarManager extends Thread{
     public boolean doBreak = false;
+    public boolean sendParticles = false;
     World world;
     ArmorStand center;
     String attunements;
@@ -37,6 +38,7 @@ public class magmaPillarManager extends Thread{
         this.command = command;
     }
     public void run(){
+
         try {
             sleep(100);
         } catch (InterruptedException exception) {
@@ -63,14 +65,16 @@ public class magmaPillarManager extends Thread{
             if (secondsLeft > 0) {
                 /** idk if this works**/
 
-                Bukkit.dispatchCommand(console, command);
+                sendParticles = true;
 
 
             } else {
+                sendParticles = false;
 
                 magmaPillarCooldown.remove(p.getUniqueId());
             }
         }else{
+            doBreak = true;
 
             magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
             System.out.println(magmaPillarCooldown);

@@ -38,6 +38,7 @@ public final class main extends JavaPlugin implements Listener
     private int magmaDiceCooldownTime;
     private int magmaPillarCooldownTime;
 
+
     public main() {
         this.timeLeft = 0L;
         this.curTime = 0L;
@@ -148,28 +149,14 @@ public final class main extends JavaPlugin implements Listener
                     final ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                     final String command = "particle flame " + center.getLocation().getBlockX() + " " + center.getLocation().getBlockY() + " " + center.getLocation().getBlockZ() + " 2 80 2 0 500 force";
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
+                    magmaPillarManager MagmaPillarManager = new magmaPillarManager(world, center, attunements, magmaPillarCooldown, p, e, magmaPillarCooldownTime, console,command);
+                    MagmaPillarManager.start();
                     while (true) {
-                        Thread.sleep(100L);
-                        final List<Entity> nearbyEntites = (List<Entity>)world.getNearbyEntities(center.getLocation(), 2.0, 100.0, 2.0);
-                        final List<LivingEntity> nearbyLiveEntities = new ArrayList<LivingEntity>();
-                        for (final Entity entity : nearbyEntites) {
-                            if (entity.isDead()) {
-                                continue;
-                            }
-                            nearbyLiveEntities.add((LivingEntity)entity);
-                        }
-                        for (final LivingEntity entity2 : nearbyLiveEntities) {
-                            entity2.damage((double)(500 + 100 * Integer.valueOf(attunements)));
-                        }
-                        if (!this.magmaPillarCooldown.containsKey(p.getUniqueId())) {
+                        if(MagmaPillarManager.doBreak){
                             break;
                         }
-                        final long secondsLeft2 = this.magmaPillarCooldown.get(p.getUniqueId()) / 1000L + this.magmaPillarCooldownTime - System.currentTimeMillis() / 1000L;
-                        if (secondsLeft2 > 0L) {
-                            Bukkit.dispatchCommand((CommandSender)console, command);
-                        }
-                        else {
-                            this.magmaPillarCooldown.remove(p.getUniqueId());
+                        if(MagmaPillarManager.sendParticles){
+                            Bukkit.dispatchCommand(console, command);
                         }
                     }
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
