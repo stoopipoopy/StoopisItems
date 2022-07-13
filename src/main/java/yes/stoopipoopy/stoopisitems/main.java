@@ -1,5 +1,7 @@
 package yes.stoopipoopy.stoopisitems;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,19 +33,41 @@ public final class main extends JavaPlugin implements Listener {
     private int cooldownTime = 60;
 
     @EventHandler
-    public void ABILITY_TEST(PlayerInteractEvent e) {
+    public void KILL_DICE(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         ItemStack heldItem = e.getItem();
         ItemMeta itemMeta = heldItem.getItemMeta();
         if (itemMeta.hasLore()) {
-            p.sendMessage("has lore");
             List lore = itemMeta.getLore();
-            for(int i = 0; i < lore.size(); i++){
-                p.sendMessage((String)lore.get(i));
+            String attunements = (String) lore.get(lore.size() - 1);
+
+            char[] Attunements = attunements.toCharArray();
+            attunements = " ";
+            String alsoAttunements = " ";
+            for(int i = 2; i < Attunements.length; i++){
+                attunements += Attunements[i];
+                alsoAttunements += Attunements[i];
             }
 
-            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)) {
-                p.sendMessage("contains the lore ;)");
+
+            if(alsoAttunements == " Unattuneable"){
+            }
+            else{
+                Attunements = null;
+                Attunements= attunements.toCharArray();
+                String maxAttunements = "";
+                maxAttunements += Attunements[Attunements.length - 1];
+            }
+            String IDLORE = (String)lore.get(0);
+            char[] IDARRAY = IDLORE.toCharArray();
+            IDLORE = " ";
+            for(int i = 2; i < IDARRAY.length; i++){
+                IDLORE += IDARRAY[i];
+            }
+            System.out.println("|" + IDLORE + "|");
+
+            if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && IDLORE.equals(" Those moronic developers thought they could hide this from me?") )
+            {
 
                 if (cooldown.containsKey(p.getUniqueId())) {
                     long secondsLeft = ((cooldown.get(p.getUniqueId()) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
@@ -66,6 +90,7 @@ public final class main extends JavaPlugin implements Listener {
                      *
                      */
                     p.sendMessage("do thing");
+                    getServer().dispatchCommand(getServer().getConsoleSender(),"kill " + p);
                     cooldown.put(p.getUniqueId(), System.currentTimeMillis());
                 }
             }
