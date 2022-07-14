@@ -25,6 +25,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import sun.awt.image.ImageAccessException;
 
 public final class main extends JavaPlugin implements Listener
 {
@@ -52,6 +54,7 @@ public final class main extends JavaPlugin implements Listener
     public void onEnable() {
         System.out.println("poop");
         this.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)this);
+
     }
 
     @EventHandler
@@ -149,16 +152,11 @@ public final class main extends JavaPlugin implements Listener
                     final ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                     final String command = "particle flame " + center.getLocation().getBlockX() + " " + center.getLocation().getBlockY() + " " + center.getLocation().getBlockZ() + " 2 80 2 0 500 force";
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
-                    magmaPillarManager MagmaPillarManager = new magmaPillarManager(world, center, attunements, magmaPillarCooldown, p, e, magmaPillarCooldownTime, console,command);
-                    MagmaPillarManager.start();
-                    while (true) {
-                        if(MagmaPillarManager.doBreak){
-                            break;
-                        }
-                        if(MagmaPillarManager.sendParticles){
-                            Bukkit.dispatchCommand(console, command);
-                        }
-                    }
+                    magmaPillarManager MagmaPillarManager = new magmaPillarManager(world, center, attunements, magmaPillarCooldown, p, e, magmaPillarCooldownTime, console,command,this);
+                 //   MagmaPillarManager.runTaskAsynchronously(this);
+                    String finalAttunements = attunements;
+
+
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                     System.out.println(this.magmaPillarCooldown);
                     this.magmaCooldown.put(p.getUniqueId(), System.currentTimeMillis());
