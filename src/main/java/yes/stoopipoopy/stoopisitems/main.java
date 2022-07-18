@@ -150,10 +150,10 @@ public final class main extends JavaPlugin implements Listener
                     final World world = p.getWorld();
                     final ArmorStand center = (ArmorStand)world.spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
                     final ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-                    final String command = "particle flame " + center.getLocation().getBlockX() + " " + center.getLocation().getBlockY() + " " + center.getLocation().getBlockZ() + " 2 80 2 0 500 force";
+                    final String command = "particle flame " + center.getLocation().getBlockX() + " " + center.getLocation().getBlockY() + " " + center.getLocation().getBlockZ() + " 2 80 2 0 5000 force";
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                     magmaPillarManager MagmaPillarManager = new magmaPillarManager(world, center, attunements, magmaPillarCooldown, p, e, magmaPillarCooldownTime, console,command,this);
-                 //   MagmaPillarManager.runTaskAsynchronously(this);
+                    MagmaPillarManager.runTaskAsynchronously(this);
                     String finalAttunements = attunements;
 
 
