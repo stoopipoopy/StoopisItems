@@ -50,11 +50,7 @@ public class magmaPillarManager extends BukkitRunnable {
             public void run() {
 
                 while(true){
-                    try {
-                        sleep(500);
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
-                    }
+
                     List<Entity> nearbyEntites = (List<Entity>) world.getNearbyEntities(center.getLocation(), 2, 100 , 2);
                     List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
                     for(Entity entity : nearbyEntites){
@@ -92,7 +88,7 @@ public class magmaPillarManager extends BukkitRunnable {
                         break;
                     }
                 }
-                this.cancel();
+
 
             }
 
