@@ -154,6 +154,10 @@ public final class main extends JavaPlugin implements Listener
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                     magmaPillarManager MagmaPillarManager = new magmaPillarManager(world, center, attunements, magmaPillarCooldown, p, e, magmaPillarCooldownTime, console,command,this);
                  //   MagmaPillarManager.runTaskAsynchronously(this);
+                    Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+                        // Code, no need to do the run() method, just directly type the code
+                        Bukkit.getServer().dispatchCommand(console, command);
+                    }, 0 /*Delay before starting in ticks*/, 20 /*Delay between runs in ticks*/);
                     String finalAttunements = attunements;
 
 
