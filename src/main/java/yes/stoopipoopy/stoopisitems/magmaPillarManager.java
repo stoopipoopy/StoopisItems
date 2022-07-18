@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static java.lang.Thread.sleep;
+
 public class magmaPillarManager extends BukkitRunnable {
     public boolean doBreak = false;
     public boolean sendParticles = false;
@@ -46,6 +48,7 @@ public class magmaPillarManager extends BukkitRunnable {
         new BukkitRunnable(){
             @Override
             public void run() {
+
                 while(true){
 
                     List<Entity> nearbyEntites = (List<Entity>) world.getNearbyEntities(center.getLocation(), 2, 100 , 2);
@@ -85,6 +88,8 @@ public class magmaPillarManager extends BukkitRunnable {
                         break;
                     }
                 }
+
+
             }
 
 
