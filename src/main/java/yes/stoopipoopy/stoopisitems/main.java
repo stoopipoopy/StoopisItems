@@ -15,6 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
@@ -38,10 +40,14 @@ public final class main extends JavaPlugin implements Listener
     private HashMap<UUID, Long> magmaCooldown;
     private HashMap<UUID, Long> magmaPillarCooldown;
     private HashMap<UUID, Long> rageComboCooldown;
+    private HashMap<UUID, Long> rageCooldown;
     private int killDiceCooldownTime;
     private int rageComboCooldownTime;
     private int magmaDiceCooldownTime;
     private int magmaPillarCooldownTime;
+    private int rageDiceCooldownTime;
+
+    private int rageComboLimit;
 
 
     public main() {
@@ -50,9 +56,14 @@ public final class main extends JavaPlugin implements Listener
         this.killCooldown = new HashMap<UUID, Long>();
         this.magmaCooldown = new HashMap<UUID, Long>();
         this.magmaPillarCooldown = new HashMap<UUID, Long>();
+        this.rageCooldown = new HashMap<UUID,Long>();
+        this.rageComboCooldown = new HashMap<UUID, Long>();
         this.killDiceCooldownTime = 60;
         this.magmaDiceCooldownTime = 120;
         this.magmaPillarCooldownTime = 20;
+        this.rageDiceCooldownTime = 180;
+        this.rageComboCooldownTime = 1;
+        this.rageComboLimit = 400 /** percent **/;
     }
 
     public void onEnable() {
@@ -324,19 +335,47 @@ public final class main extends JavaPlugin implements Listener
             }
             System.out.println("|" + IDLORE + "|");
             if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && IDLORE.equals(" Level 18 spell.")) {
-                if (this.killCooldown.containsKey(p.getUniqueId())) {
-                    final long secondsLeft = this.killCooldown.get(p.getUniqueId()) / 1000L + this.killDiceCooldownTime - System.currentTimeMillis() / 1000L;
+                if (this.rageCooldown.containsKey(p.getUniqueId())) {
+                    final long secondsLeft = this.rageCooldown.get(p.getUniqueId()) / 1000L + this.rageDiceCooldownTime - System.currentTimeMillis() / 1000L;
                     if (secondsLeft > 0L) {
                         p.sendMessage("seconds left: " + String.valueOf(secondsLeft));
                     }
                     else {
-                        this.killCooldown.remove(p.getUniqueId());
+                        this.rageCooldown.remove(p.getUniqueId());
                     }
                 }
                 else {
                     p.sendMessage("do thing (rage)");
-                    rageManager RageManager = new rageManager();
-                    RageManager.start();
+                    new BukkitRunnable(){
+                        @EventHandler
+                        public void COMBO(EntityDamageByEntityEvent e){
+                            if(e.getDamager().getClass() == Player.class){
+
+                            }
+
+
+
+                        }
+                        public void run(){
+                            while(true){
+                                if (rageComboCooldown.containsKey(p.getUniqueId())) {
+                                    final long secondsLeft = rageComboCooldown.get(p.getUniqueId()) / 1000L + killDiceCooldownTime - System.currentTimeMillis() / 1000L;
+                                    if (secondsLeft > 0L) {
+                                        p.sendMessage("seconds left: " + String.valueOf(secondsLeft));
+                                    }
+                                    else {
+                                        rageComboCooldown.remove(p.getUniqueId());
+                                    }
+                                }
+                                else {
+                                    p.sendMessage("do thing (rage)");
+                                    rageManager RageManager = new rageManager();
+                                    RageManager.start();
+                                    rageComboCooldown.put(p.getUniqueId(), System.currentTimeMillis());
+                                }
+                            }
+                        }
+                    }.runTaskLater(this,0);
                     this.killCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                 }
             }
