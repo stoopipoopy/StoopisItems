@@ -169,63 +169,9 @@ public final class main extends JavaPlugin implements Listener
                     final String command = "particle flame " + center.getLocation().getBlockX() + " " + center.getLocation().getBlockY() + " " + center.getLocation().getBlockZ() + " 2 80 2 0 10 force";
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                     magmaPillarManager MagmaPillarManager = new magmaPillarManager(world, center, attunements, magmaPillarCooldown, p, e, magmaPillarCooldownTime, console,command,this);
-                 //   MagmaPillarManager.runTaskAsynchronously(this);
+                    MagmaPillarManager.start();
                     String finalAttunements1 = attunements;
-                    new BukkitRunnable(){
-                        @Override
-                        public void run() {
 
-                            while(true){
-                                try {
-                                    sleep(500);
-                                } catch (InterruptedException ex) {
-                                    p.sendMessage("shit the sleep wont work oh god ahhhhh turufjelaielidniegnid *dies*");
-                                }
-                                List<Entity> nearbyEntites = (List) world.getNearbyEntities(center.getLocation(), 2, 80 , 2);
-                                List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
-                                for(Entity entity : nearbyEntites){
-                                    if(entity.isDead()){
-                                        continue;
-                                    }
-                                    else{
-                                        nearbyLiveEntities.add((LivingEntity) entity);
-                                    }
-
-
-                                }
-                                for(LivingEntity entity : nearbyLiveEntities){
-                                    try{
-                                        entity.damage(500 + (100 * Integer.valueOf(finalAttunements1)));
-                                    } catch(NumberFormatException e){
-                                        System.out.println("Failed to damage nearby entity!");
-                                    }
-
-                                }
-                                if(magmaPillarCooldown.containsKey(p.getUniqueId())){
-
-                                    long secondsLeft = ((magmaPillarCooldown.get(p.getUniqueId()) / 1000) + magmaPillarCooldownTime) - (System.currentTimeMillis() / 1000);
-                                    if (secondsLeft > 0) {
-                                        /** idk if this works**/
-                                        p.getServer().dispatchCommand(p.getServer().getConsoleSender(), command);
-
-
-                                    } else {
-                                        magmaPillarCooldown.remove(p.getUniqueId());
-                                    }
-                                }else{
-
-
-                                    magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
-                                    System.out.println(magmaPillarCooldown);
-                                    break;
-                                }
-                            }
-
-
-                        }
-
-
-                    }.runTaskLater(this,0);
                   //  Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
                         // Code, no need to do the run() method, just directly type the code
                   //      Bukkit.getServer().dispatchCommand(console, command);
