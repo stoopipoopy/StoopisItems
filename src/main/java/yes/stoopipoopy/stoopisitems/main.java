@@ -169,7 +169,12 @@ public final class main extends JavaPlugin implements Listener
                     final String command = "particle flame " + center.getLocation().getBlockX() + " " + center.getLocation().getBlockY() + " " + center.getLocation().getBlockZ() + " 2 80 2 0 10 force";
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                     magmaPillarManager MagmaPillarManager = new magmaPillarManager(world, center, attunements, magmaPillarCooldown, p, e, magmaPillarCooldownTime, console,command,this);
-                    MagmaPillarManager.start();
+                    try {
+                        MagmaPillarManager.start();
+                    }catch(IllegalThreadStateException ex){
+                        System.out.println("Thread couldnt start :(");
+                    }
+
                     String finalAttunements1 = attunements;
 
                   //  Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
