@@ -47,12 +47,16 @@ public class magmaPillarManager extends Thread{
     }
     public void run(){
         while(true){
-
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             List<Entity> nearbyEntites = (List<Entity>) world.getNearbyEntities(center.getLocation(), 2, 100 , 2);
             List<LivingEntity> nearbyLiveEntities = new ArrayList<>();
             for(Entity entity : nearbyEntites){
                 if(entity.isDead()){
-                    ;
+                    continue;
                 }
                 else{
                     nearbyLiveEntities.add((LivingEntity) entity);
@@ -61,7 +65,12 @@ public class magmaPillarManager extends Thread{
 
             }
             for(LivingEntity entity : nearbyLiveEntities){
-                entity.damage(500 + (100 * Integer.valueOf(attunements)));
+                try{
+                    entity.damage(500 + (100 * Integer.valueOf(attunements)));
+                }catch(NumberFormatException e){
+                    System.out.println("Couldnt damage entity! attunements is non-integer!");
+                }
+
             }
             if(magmaPillarCooldown.containsKey(p.getUniqueId())){
 
