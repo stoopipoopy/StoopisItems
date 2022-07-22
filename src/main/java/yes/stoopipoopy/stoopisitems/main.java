@@ -6,6 +6,7 @@ package yes.stoopipoopy.stoopisitems;
 
 import java.util.*;
 
+import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -379,6 +380,21 @@ public final class main extends JavaPlugin implements Listener
                     this.killCooldown.put(p.getUniqueId(), System.currentTimeMillis());
                 }
             }
+        }
+    }
+    @EventHandler
+    public void WARP_DICE(final PlayerInteractEvent e) throws InterruptedException{
+
+    }
+    @EventHandler
+    @WorkingOn
+    public void WHIP_REVOLVER(final PlayerInteractEvent e) throws InterruptedException{
+        final Player p = e.getPlayer();
+        final ItemStack heldItem = e.getItem();
+        final ItemMeta itemMeta = heldItem.getItemMeta();
+        System.out.println(itemMeta);
+        if((e.getAction() == Action.RIGHT_CLICK_AIR  || e.getAction() == Action.RIGHT_CLICK_BLOCK)){
+
         }
     }
 
