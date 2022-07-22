@@ -1,6 +1,6 @@
 # Stoopis Items
 A plugin for interfacing with items on dungeonfy
-what else do i put here
+
 
 
 
