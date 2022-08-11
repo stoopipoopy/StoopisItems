@@ -5,3 +5,6 @@ api-version: 1.17
 authors: [ stoopi_poopy ]
 description: a very cool plugin used for dungeonfy :D
 website: https://www.youtube.com/c/enook
+commands:
+  reloadGun:
+    description: "Reloads the gun -_-"

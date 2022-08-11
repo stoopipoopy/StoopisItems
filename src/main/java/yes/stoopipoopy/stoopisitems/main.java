@@ -1,12 +1,11 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
+
 
 package yes.stoopipoopy.stoopisitems;
 
 import java.util.*;
 
 import org.bukkit.Material;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -69,13 +68,15 @@ public final class main extends JavaPlugin implements Listener
 
     public void onEnable() {
         System.out.println("poop");
+        getCommand("reloadGun").setExecutor((CommandExecutor) new ReloadGun());
         this.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)this);
+        this.getServer().getPluginManager().registerEvents((Listener) new ShotManager(),(Plugin) this);
 
     }
 
     @EventHandler
     @Finished
-    public void KILL_DICE(final PlayerInteractEvent e) {
+    public void KILL_DICE(final PlayerInteractEvent e) throws InterruptedException {
         final Player p = e.getPlayer();
         final ItemStack heldItem = e.getItem();
         final ItemMeta itemMeta = heldItem.getItemMeta();
@@ -344,9 +345,10 @@ public final class main extends JavaPlugin implements Listener
         final ItemStack heldItem = e.getItem();
         final ItemMeta itemMeta = heldItem.getItemMeta();
         System.out.println(itemMeta);
-        if((e.getAction() == Action.RIGHT_CLICK_AIR  || e.getAction() == Action.RIGHT_CLICK_BLOCK)){
-
+        if((e.getAction() == Action.RIGHT_CLICK_AIR  || e.getAction() == Action.RIGHT_CLICK_BLOCK)/** check if item is the gun **/){
+            
         }
     }
+
 
 }
