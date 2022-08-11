@@ -72,6 +72,7 @@ public final class main extends JavaPlugin implements Listener
         this.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)this);
         this.getServer().getPluginManager().registerEvents((Listener) new ShotManager(),(Plugin) this);
 
+
     }
 
     @EventHandler

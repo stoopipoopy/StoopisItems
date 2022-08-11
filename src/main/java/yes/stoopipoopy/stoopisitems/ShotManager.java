@@ -7,45 +7,56 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 
 public class ShotManager extends Thread implements Listener {
-    public static Integer maxAmmo = 6;
-    public static Integer ammoLeft = maxAmmo;
+    public static HashMap<UUID, GunManager> playerAndGun = new HashMap<>();
+    public HashMap<UUID, GunManager> playerAndGunSTALE = new HashMap<>();
 
-    public static HashMap<UUID,HashMap<String, HashMap<Integer,Integer>>> gunsAndAmmo = new HashMap<>();
     @EventHandler
     public void GENERIC_SHOT(final PlayerInteractEvent e){
         Player p = e.getPlayer();
+        UUID userID = p.getUniqueId();
+        if(!(playerAndGun.containsKey(userID))){
+            playerAndGun.put(userID,new GunManager(userID, 6, 6 , "g"));
+        }
+
 
         // change later; for test
 
-        ammoLeft -= 1;
-        if(ammoLeft < 1){
+
+        playerAndGun.put(userID,new GunManager(userID, playerAndGun.get(userID).getTotalAmmo(), playerAndGun.get(userID).getCurrentAmmo() , "g"));
+        if(playerAndGun.get(userID).getCurrentAmmo() < 1){
             p.sendMessage("No ammo haha haha haha hahah ahaha ok ill stop");
         }
         else{
-            String toPrint = showAmmo();
+            playerAndGun.get(userID).setCurrentAmmo(playerAndGun.get(userID).getCurrentAmmo() - 1);
+
+            String toPrint = showAmmo(userID);
             p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(toPrint));
             p.sendMessage("you shot gun :)");
+            p.sendMessage(Integer.toString(playerAndGun.get(userID).getCurrentAmmo()));
+            p.sendMessage(Integer.toString(playerAndGun.get(userID).getTotalAmmo()));
             // (X / X / X / X / 0 / 0) 4/6 ammo
         }
 
     }
-    public String showAmmo(){
+
+    public static String showAmmo(UUID userID){
         StringBuilder ammoShower = new StringBuilder();
         ammoShower.append("(");
-        for(int i = 0; i < maxAmmo; i++){
-            if(i > ammoLeft){
+        for(int i = 0; i < playerAndGun.get(userID).getTotalAmmo(); i++){
+            if(i > playerAndGun.get(userID).getCurrentAmmo() - 1){
                 ammoShower.append("0");
             }
             else{
                 ammoShower.append("X");
             }
-            if(i != maxAmmo - 1){
+            if(i != playerAndGun.get(userID).getTotalAmmo() - 1){
                 ammoShower.append(" / ");
             }
 
@@ -53,5 +64,11 @@ public class ShotManager extends Thread implements Listener {
         }
         ammoShower.append(")");
         return ammoShower.toString();
+    }
+    @EventHandler
+    public void onHandChange(PlayerItemHeldEvent event) {
+        Player p = event.getPlayer();
+        String toPrint = showAmmo(p.getUniqueId());
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(toPrint));
     }
 }
