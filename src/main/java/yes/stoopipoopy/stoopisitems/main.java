@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.ItemStack;
@@ -75,6 +76,7 @@ public final class main extends JavaPlugin implements Listener
 
     }
 
+    /**
     @EventHandler
     @Finished
     public void KILL_DICE(final PlayerInteractEvent e) throws InterruptedException {
@@ -182,7 +184,7 @@ public final class main extends JavaPlugin implements Listener
                   //  Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
                         // Code, no need to do the run() method, just directly type the code
                   //      Bukkit.getServer().dispatchCommand(console, command);
-                  //  }, 0 /*Delay before starting in ticks*/, 20 /*Delay between runs in ticks*/);
+                  //  }, 0 Delay before starting in ticks, 20 Delay between runs in ticks);
                     String finalAttunements = attunements;
 
                     this.magmaPillarCooldown.put(p.getUniqueId(), System.currentTimeMillis());
@@ -339,6 +341,8 @@ public final class main extends JavaPlugin implements Listener
     public void WARP_DICE(final PlayerInteractEvent e) throws InterruptedException{
 
     }
+
+    **/
     @EventHandler
     @WorkingOn
     public void WHIP_REVOLVER(final PlayerInteractEvent e) throws InterruptedException{
@@ -350,6 +354,7 @@ public final class main extends JavaPlugin implements Listener
             
         }
     }
+
 
 
 }
